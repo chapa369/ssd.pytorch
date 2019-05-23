@@ -70,6 +70,7 @@ if not os.path.exists(args.save_folder):
 
 def train():
     if args.dataset == 'COCO':
+<<<<<<< HEAD
         # if args.dataset_root == VOC_ROOT:
         #     if not os.path.exists(COCO_ROOT):
         #         parser.error('Must specify dataset_root if specifying dataset')
@@ -84,6 +85,21 @@ def train():
     elif args.dataset == 'VOC':
         # if args.dataset_root == COCO_ROOT:
         #     parser.error('Must specify dataset if specifying dataset_root')
+=======
+        if args.dataset_root == VOC_ROOT:
+            if not os.path.exists(COCO_ROOT):
+                parser.error('Must specify dataset_root if specifying dataset')
+            print("WARNING: Using default COCO dataset_root because " +
+                  "--dataset_root was not specified.")
+            args.dataset_root = COCO_ROOT
+        cfg = coco
+        dataset = COCODetection(root=args.dataset_root,
+                                transform=SSDAugmentation(cfg['min_dim'],
+                                                          MEANS))
+    elif args.dataset == 'VOC':
+        if args.dataset_root == COCO_ROOT:
+            parser.error('Must specify dataset if specifying dataset_root')
+>>>>>>> 5b0b77faa955c1917b0c710d770739ba8fbff9b7
         cfg = voc
         dataset = VOCDetection(root=args.dataset_root,
                                transform=SSDAugmentation(cfg['min_dim'],
@@ -181,6 +197,7 @@ def train():
         loss.backward()
         optimizer.step()
         t1 = time.time()
+<<<<<<< HEAD
         #loc_loss += loss_l.data[0]
         loc_loss += loss_l.item()
         #conf_loss += loss_c.data[0]
@@ -196,6 +213,17 @@ def train():
 
         if args.visdom:
             update_vis_plot(iteration, loss_l.item(), loss_c.item(),
+=======
+        loc_loss += loss_l.data[0]
+        conf_loss += loss_c.data[0]
+
+        if iteration % 10 == 0:
+            print('timer: %.4f sec.' % (t1 - t0))
+            print('iter ' + repr(iteration) + ' || Loss: %.4f ||' % (loss.data[0]), end=' ')
+
+        if args.visdom:
+            update_vis_plot(iteration, loss_l.data[0], loss_c.data[0],
+>>>>>>> 5b0b77faa955c1917b0c710d770739ba8fbff9b7
                             iter_plot, epoch_plot, 'append')
 
         if iteration != 0 and iteration % 5000 == 0:

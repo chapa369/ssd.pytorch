@@ -129,4 +129,8 @@ data/datasets/
 data/ssd_dataloader.py
 
 # pylint
+<<<<<<< HEAD
 .pylintrc
+=======
+.pylintrc
+>>>>>>> 5b0b77faa955c1917b0c710d770739ba8fbff9b7
